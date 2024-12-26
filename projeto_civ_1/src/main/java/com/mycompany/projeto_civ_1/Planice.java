@@ -10,7 +10,7 @@ package com.mycompany.projeto_civ_1;
  */
 public class Planice extends Terreno {
     public Planice(){
-        super ("Planice",'P',3,1);
+        super ("Planice",'P');
     }
     @Override
     public int getCustoMovimento(){

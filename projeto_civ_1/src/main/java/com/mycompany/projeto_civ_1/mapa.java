@@ -53,7 +53,8 @@ public class mapa {
         }else if (sorteio < 80){
             return new Floresta();
         /*}else if (sorteio < 5){
-            return new Montanha();*/   
+            return new Montanha();*/
+        
         }else{
             return new Deserto();
         }

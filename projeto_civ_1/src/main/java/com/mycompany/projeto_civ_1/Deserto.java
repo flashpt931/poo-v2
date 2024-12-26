@@ -4,13 +4,13 @@
  */
 package com.mycompany.projeto_civ_1;
 
-/**KLLLL
+/**
  *
  * @author franc
  */
 public class Deserto extends Terreno {
     public Deserto(){
-        super ("Deserto",'D',0,2);
+        super ("Deserto",'D');
     }
     @Override
     public int getCustoMovimento(){

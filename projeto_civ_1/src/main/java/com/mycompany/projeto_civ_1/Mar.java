@@ -10,7 +10,7 @@ package com.mycompany.projeto_civ_1;
  */
 public class Mar extends Terreno {
    public Mar(){
-       super("MAR",'M',3,0);
+       super("MAR",'M');
    } 
    @Override
    public int getCustoMovimento(){
