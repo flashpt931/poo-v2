@@ -6,7 +6,7 @@ package com.mycompany.projeto_civ_1;
 
 /**
  *
- * @author franc
+ * teste TESTETESTETSETSET
  */
 public class Cidades extends Terreno{
     private int comida;
