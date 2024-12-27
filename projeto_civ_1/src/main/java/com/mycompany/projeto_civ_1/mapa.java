@@ -12,29 +12,34 @@ import java.util.Random;
 public class mapa {
     private int tamanho;
     private Terreno[][] mapa;
+
     public int getTamanho() {
-    return tamanho;
-}
-    
-    public void definirTamanhoAleatorio(){
-      Random random = new Random();
-      this.tamanho = random.nextInt(51)+10;
-      System.out.println("Tamanho do mapa: " + tamanho + "X" + tamanho);
-      mapa = new Terreno [tamanho][tamanho];
+        return tamanho;
     }
-    
-    public  void GerarMap (int tamanho){
+
+    public Terreno[][] getMapa() {
+        return mapa;
+    }
+
+    public void definirTamanhoAleatorio() {
+        Random random = new Random();
+        this.tamanho = random.nextInt(51) + 10;
+        System.out.println("Tamanho do mapa: " + tamanho + "X" + tamanho);
+        mapa = new Terreno[tamanho][tamanho];
+    }
+
+    public void GerarMap(int tamanho) {
         Random random = new Random();
         if (mapa == null) {
-    throw new IllegalStateException("O array 'mapa' não foi inicializado!");
-    }
+            throw new IllegalStateException("O array 'mapa' não foi inicializado!");
+        }
         // Gera o mapa preenchendo a matriz com terrenos aleatórios
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
                 mapa[i][j] = gerarTerrenoAleatorio(random);
             }
         }
-        
+
         // Exibe o mapa no console
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
@@ -43,19 +48,16 @@ public class mapa {
             System.out.println();
         }
     }
-   
-    private Terreno gerarTerrenoAleatorio(Random random){
+
+    private Terreno gerarTerrenoAleatorio(Random random) {
         int sorteio = random.nextInt(100);
-        if (sorteio < 5){
+        if (sorteio < 5) {
             return new Mar();
-        }else if (sorteio <50){
+        } else if (sorteio < 50) {
             return new Planice();
-        }else if (sorteio < 80){
+        } else if (sorteio < 80) {
             return new Floresta();
-        /*}else if (sorteio < 5){
-            return new Montanha();*/
-        
-        }else{
+        } else {
             return new Deserto();
         }
     }
