@@ -41,8 +41,11 @@ public class colono {
         }
     }
 
-        // Cria a cidade na posição do colono
-        mapa[posX][posY] = new Cidades();
+        
+        // Cria a cidade na posição do colono com nível inicial
+        Cidades novaCidade = new Cidades();
+        novaCidade.setNivel(1); // Define o nível inicial como 1
+        mapa[posX][posY] = novaCidade;
         System.out.println("Cidade criada com sucesso na posição (" + posX + ", " + posY + ").");
         return true;
     }
