@@ -1,16 +1,37 @@
 package com.mycompany.projeto_civ_1;
 
-public abstract class Tropa {
+public abstract class Tropa extends Terreno {
     private String nome;
     private char simbolo;
     private int vida;
     private int dano;
+    private int x; // Coordenada X no mapa
+    private int y; // Coordenada Y no mapa
 
-    public Tropa(String nome, char simbolo, int vida, int dano) {
+    public Tropa(String nome, char simbolo, int vida, int dano, int x, int y) {
+        super(nome, simbolo, x, y); // Call the constructor of the superclass Terreno
         this.nome = nome;
         this.simbolo = simbolo;
         this.vida = vida;
         this.dano = dano;
+        this.x = x;
+        this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public int getVida() {
@@ -29,6 +50,10 @@ public abstract class Tropa {
         return nome;
     }
 
+    public char getSimbolo() {
+        return simbolo;
+    }
+
     public void atacar(Tropa outraTropa) {
         if (!outraTropa.estaViva()) {
             System.out.println(outraTropa.getNome() + " já está derrotado. O ataque foi ignorado.");
@@ -44,20 +69,6 @@ public abstract class Tropa {
     }
 
     public boolean estaViva() {
-        return this.vida > 0;
-    }
-
-    public void combate(Tropa outraTropa) {
-        while (this.estaViva() && outraTropa.estaViva()) {
-            this.atacar(outraTropa);
-            if (outraTropa.estaViva()) {
-                outraTropa.atacar(this);
-            }
-        }
-        if (this.estaViva()) {
-            System.out.println(this.getNome() + " venceu o combate!");
-        } else {
-            System.out.println(outraTropa.getNome() + " venceu o combate!");
-        }
+        return vida > 0;
     }
 }
