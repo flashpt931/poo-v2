@@ -22,12 +22,11 @@ public class Projeto_civ_1 {
     }
 
     private void inicializarJogo() {
-        colono = new colono(); // Create a new "colono" (settler) object
-        // Assuming the "colono" starts at the center of the map (or another logical position)
-        int mid = mapa.getTamanho() / 2;
-        // Put the "colono" on the map at the center (or another starting position)
-        mapa.getMapa()[mid][mid] = new Planice() {
-        };  // Placeholder for the "colono" position (can be updated with a symbol)
+        colono = new colono(); // Criando o colono
+        int mid = mapa.getTamanho() / 2; // Calculando o centro do mapa
+        colono.setX(mid); // Definindo coordenada X
+        colono.setY(mid); // Definindo coordenada Y
+        mapa.adicionarTropa(colono); // Adicionando o colono à lista de tropas no mapa
         turno = 1;
     }
 
@@ -38,11 +37,10 @@ public class Projeto_civ_1 {
         while (!sair) {
             // Display main menu
             System.out.println("\n=== Civilização - Turno " + turno + " ===");
-            System.out.println("1. Mover uma unidade");
-            System.out.println("2. Atacar com uma unidade");
-            System.out.println("3. Construir ou melhorar um edifício na cidade");
-            System.out.println("4. Ver o mapa");
-            System.out.println("5. Finalizar turno");
+            System.out.println("1. Lista de unidades");
+            System.out.println("2. Construir ou melhorar um edifício na cidade");
+            System.out.println("3. Ver o mapa");
+            System.out.println("4. Finalizar turno");
             System.out.println("0. Sair do jogo");
             System.out.print("Escolha uma opção: ");
             
@@ -50,23 +48,19 @@ public class Projeto_civ_1 {
 
             switch (opcao) {
                 case 1:
-                    moverUnidade(scanner);
+                    listadetropas(scanner);
                     break;
                 case 2:
-                    atacarUnidade(scanner);
-                    break;
-                case 3:
                     construirEdificio(scanner);
                     break;
-                case 4:
+                case 3:
                     exibirMapa();
                     break;
-                case 5:
+                case 4:
                     finalizarTurno();
                     break;
                 case 0:
                     sair = true;
-                    System.out.println("Obrigado por jogar!");
                     break;
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
@@ -74,53 +68,78 @@ public class Projeto_civ_1 {
         }
         scanner.close();
     }
+    private void listadetropas(Scanner scanner) {
+        mapa.listarTropas();
+        Tropa tropaEscolhida = mapa.escolherTropa(scanner);
+        if (tropaEscolhida != null) {
+            System.out.println("Tropa escolhida: " + tropaEscolhida.getNome() + " na posição (" + tropaEscolhida.getX() + ", " + tropaEscolhida.getY() + ")");
+            if (tropaEscolhida instanceof colono) {
+                boolean voltar = false;
+                while (!voltar) {
+                    System.out.println("1. Mover tropa");
+                    System.out.println("2. Criar cidade");
+                    System.out.println("3. Voltar");
+                    System.out.print("Escolha uma opção: ");
+                    int opcao = scanner.nextInt();
+                    switch (opcao) {
+                        case 1:
+                            moverUnidade(scanner, tropaEscolhida);
+                            break;
+                        case 2:
+                            criarCidade(scanner, tropaEscolhida);
+                            break;
+                        case 3:
+                            voltar = true;
+                            break;
+                        default:
+                            System.out.println("Opção inválida. Tente novamente.");
+                    }
+                }
+            }
+        }
+    }
 
-    private void moverUnidade(Scanner scanner) {
+    private void moverUnidade(Scanner scanner, Tropa tropa) {
         System.out.println("Movendo unidade...");
         // Implement logic for moving a unit
         // For example, move the 'colono' by its movement cost and current position
     }
 
-    private void atacarUnidade(Scanner scanner) {
-        System.out.println("Atacando com unidade...");
-        // Implement logic for attacking with a unit
+    private void criarCidade(Scanner scanner, Tropa tropa) {
+        if (tropa instanceof colono) {
+            colono colono = (colono) tropa;
+            boolean sucesso = colono.gerarCidade(colono.getX(), colono.getY(), mapa.getMapa());
+            if (sucesso) {
+                mapa.removercolono(colono); // Remove o colono do mapa
+            }
+        } 
     }
 
     private void construirEdificio(Scanner scanner) {
         System.out.println("Construindo edifício...");
         // Implement logic for building or upgrading a building
     }
-
+    
     private void exibirMapa() {
-        System.out.println("Exibindo mapa:");
-        // Use the new mapa class to display the map
+        colono.imprimirMapa(mapa.getMapa());
+    }
+
+    private void finalizarTurno() {
+        turno++;
+        // Verifica e evolui o nível das cidades no final de cada turno
         for (int i = 0; i < mapa.getTamanho(); i++) {
             for (int j = 0; j < mapa.getTamanho(); j++) {
-                System.out.print(mapa.getMapa()[i][j].getSimbolo() + " ");
+                if (mapa.getMapa()[i][j] instanceof Cidades) {
+                    ((Cidades) mapa.getMapa()[i][j]).evoluirNivel();
+                }
             }
-            System.out.println();
         }
-    }
-
-    /*private void finalizarTurno() {
-        turno++;
         System.out.println("Turno " + turno + " iniciado!");
-    }*/
-    private void finalizarTurno() {
-    turno++;
-    // Verifica e evolui o nível das cidades no final de cada turno
-    for (int i = 0; i < mapa.getTamanho(); i++) {
-        for (int j = 0; j < mapa.getTamanho(); j++) {
-            if (mapa.getMapa()[i][j] instanceof Cidades) {
-                ((Cidades) mapa.getMapa()[i][j]).evoluirNivel();
-            }
-        }
     }
-    System.out.println("Turno " + turno + " iniciado!");
-}
 
     public static void main(String[] args) {
         Projeto_civ_1 jogo = new Projeto_civ_1();
         jogo.jogar();
     }
 }
+
