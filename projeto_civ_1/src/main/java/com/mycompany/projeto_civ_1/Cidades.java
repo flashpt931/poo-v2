@@ -17,6 +17,15 @@ public class Cidades extends Terreno{
         this.comida = 0;
         this.producao = 0;
         this.raioDominacao = 2;
+        this.nivel = 1; // Inicializa o nível como 1
+    }
+    // Métodos getters e setters para o nível
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
     }
     public int getRaioDominacao() {
         return raioDominacao;
