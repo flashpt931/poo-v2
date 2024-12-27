@@ -102,10 +102,22 @@ public class Projeto_civ_1 {
         }
     }
 
-    private void finalizarTurno() {
+    /*private void finalizarTurno() {
         turno++;
         System.out.println("Turno " + turno + " iniciado!");
+    }*/
+    private void finalizarTurno() {
+    turno++;
+    // Verifica e evolui o nível das cidades no final de cada turno
+    for (int i = 0; i < mapa.getTamanho(); i++) {
+        for (int j = 0; j < mapa.getTamanho(); j++) {
+            if (mapa.getMapa()[i][j] instanceof Cidades) {
+                ((Cidades) mapa.getMapa()[i][j]).evoluirNivel();
+            }
+        }
     }
+    System.out.println("Turno " + turno + " iniciado!");
+}
 
     public static void main(String[] args) {
         Projeto_civ_1 jogo = new Projeto_civ_1();
