@@ -71,6 +71,17 @@ public class Cidades extends Terreno{
     public int getCustoMovimento(){
         return 1;
     }
+
+    public void evoluirNivel() {
+    if (this.comida >= 100 && this.producao >= 50) {
+        this.nivel++;
+        this.comida -= 100;
+        this.producao -= 50;
+        System.out.println("Cidade evoluiu para o nível " + this.nivel);
+    } else {
+        System.out.println("Recursos insuficientes para evoluir a cidade.");
+    }
+}
 }
     
     
