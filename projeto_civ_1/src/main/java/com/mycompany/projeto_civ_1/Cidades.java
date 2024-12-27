@@ -12,6 +12,7 @@ public class Cidades extends Terreno{
     private int comida;
     private int producao;
     private int raioDominacao;
+    private int nivel;
     public Cidades(){
         super ("Cidades",'C',0,0);
         this.comida = 0;
