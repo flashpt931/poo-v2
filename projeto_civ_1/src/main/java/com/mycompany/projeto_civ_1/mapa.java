@@ -3,8 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.projeto_civ_1;
-import static java.lang.Math.random;
+
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  *
  * @author franc
@@ -12,6 +15,11 @@ import java.util.Random;
 public class mapa {
     private int tamanho;
     private Terreno[][] mapa;
+    private ArrayList<Tropa> tropas;
+
+    public mapa() {
+        tropas = new ArrayList<>();
+    }
 
     public int getTamanho() {
         return tamanho;
@@ -21,9 +29,18 @@ public class mapa {
         return mapa;
     }
 
+    public void adicionarTropa(Tropa tropa) {
+        tropas.add(tropa);
+        mapa[tropa.getX()][tropa.getY()] = tropa; // Adiciona a tropa ao mapa
+    }
+
+    public void removercolono(Tropa tropa) {
+        tropas.remove(tropa);
+    }
+
     public void definirTamanhoAleatorio() {
         Random random = new Random();
-        this.tamanho = random.nextInt(51) + 10;
+        this.tamanho = random.nextInt(21) + 10;
         System.out.println("Tamanho do mapa: " + tamanho + "X" + tamanho);
         mapa = new Terreno[tamanho][tamanho];
     }
@@ -33,20 +50,13 @@ public class mapa {
         if (mapa == null) {
             throw new IllegalStateException("O array 'mapa' não foi inicializado!");
         }
-        // Gera o mapa preenchendo a matriz com terrenos aleatórios
-        for (int i = 0; i < tamanho; i++) {
-            for (int j = 0; j < tamanho; j++) {
-                mapa[i][j] = gerarTerrenoAleatorio(random);
-            }
-        }
 
-        // Exibe o mapa no console
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
-                System.out.print(mapa[i][j].getSimbolo() + " ");
+                mapa[i][j] = gerarTerrenoAleatorio(random); // Preenchendo o terreno aleatório
             }
-            System.out.println();
         }
+        System.out.println();
     }
 
     private Terreno gerarTerrenoAleatorio(Random random) {
@@ -61,8 +71,33 @@ public class mapa {
             return new Deserto();
         }
     }
-}
 
+    public void listarTropas() {
+        if (tropas.isEmpty()) {
+            System.out.println("Não há tropas no mapa.");
+        } else {
+            System.out.println("Tropas presentes no mapa:");
+            for (int i = 0; i < tropas.size(); i++) {
+                Tropa tropa = tropas.get(i);
+                System.out.println(i + ". Nome: " + tropa.getNome() + ", Símbolo: " + tropa.getSimbolo() + ", Vida: " + tropa.getVida() + ", Posição: (" + tropa.getX() + ", " + tropa.getY() + ")");
+            }
+        }
+    }
+
+    public Tropa escolherTropa(Scanner scanner) {
+        listarTropas();
+        if (tropas.isEmpty()) {
+            return null;
+        }
+        System.out.print("Escolha o índice da tropa: ");
+        int indice = scanner.nextInt();
+        if (indice < 0 || indice >= tropas.size()) {
+            System.out.println("Índice inválido. Nenhuma tropa selecionada.");
+            return null;
+        }
+        return tropas.get(indice);
+    }
+}
 
 
 
