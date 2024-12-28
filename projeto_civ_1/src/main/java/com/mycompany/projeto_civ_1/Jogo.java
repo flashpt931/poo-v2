@@ -1,4 +1,4 @@
-package com.mycompany.projeto_civ_1;
+/*package com.mycompany.projeto_civ_1;
 
 public class Jogo {
     public static void main(String[] args) {
@@ -8,4 +8,4 @@ public class Jogo {
         System.out.println("Iniciando combate!");
         tropa1.combate(tropa2);
     }
-}
+}*/

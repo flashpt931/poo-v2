@@ -101,8 +101,54 @@ public class Projeto_civ_1 {
 
     private void moverUnidade(Scanner scanner, Tropa tropa) {
         System.out.println("Movendo unidade...");
-        // Implement logic for moving a unit
-        // For example, move the 'colono' by its movement cost and current position
+        System.out.print("Digite a nova posição X: ");
+        int novoX = scanner.nextInt();
+        System.out.print("Digite a nova posição Y: ");
+        int novoY = scanner.nextInt();
+
+        // Verifica se a nova posição está dentro dos limites do mapa
+        if (novoX < 0 || novoX >= mapa.getTamanho() || novoY < 0 || novoY >= mapa.getTamanho()) {
+            System.out.println("Posição inválida. Movimento cancelado.");
+            return;
+        }
+
+        // Verifica se a nova posição está ocupada por outra tropa
+        if (mapa.getMapa()[novoX][novoY] instanceof Tropa) {
+            System.out.println("A posição (" + novoX + ", " + novoY + ") já está ocupada por outra tropa. Movimento cancelado.");
+            return;
+        }
+
+        // Calcula a distância de movimento
+        int distancia = Math.abs(novoX - tropa.getX()) + Math.abs(novoY - tropa.getY());
+
+        // Calcula o custo de movimento com base no terreno
+        int custoMovimento = 0;
+        int xAtual = tropa.getX();
+        int yAtual = tropa.getY();
+        for (int i = 0; i < distancia; i++) {
+            if (xAtual != novoX) {
+                xAtual += (novoX > xAtual) ? 1 : -1;
+            } else if (yAtual != novoY) {
+                yAtual += (novoY > yAtual) ? 1 : -1;
+            }
+            custoMovimento += mapa.getMapa()[xAtual][yAtual].getCustoMovimento();
+        }
+
+        // Verifica se a tropa tem pontos de movimento suficientes
+        if (tropa.getPontosMovimento() < custoMovimento) {
+            System.out.println("Pontos de movimento insuficientes. Movimento cancelado.");
+            return;
+        }
+
+        // Atualiza o mapa e a posição da tropa
+        Terreno terrenoAnterior = mapa.getMapa()[novoX][novoY]; // Salva o terreno anterior
+        mapa.getMapa()[tropa.getX()][tropa.getY()] = terrenoAnterior; // Substitui a posição anterior da tropa pelo terreno anterior
+        tropa.setX(novoX);
+        tropa.setY(novoY);
+        mapa.getMapa()[novoX][novoY] = tropa; // Adiciona a tropa na nova posição
+        tropa.reduzirPontosMovimento(custoMovimento); // Reduz os pontos de movimento da tropa
+
+        System.out.println("Unidade movida para a posição (" + novoX + ", " + novoY + ").");
     }
 
     private void criarCidade(Scanner scanner, Tropa tropa) {

@@ -98,6 +98,3 @@ public class mapa {
         return tropas.get(indice);
     }
 }
-
-
-

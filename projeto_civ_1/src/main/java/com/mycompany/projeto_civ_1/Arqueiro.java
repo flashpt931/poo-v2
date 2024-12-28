@@ -32,7 +32,7 @@ public class Arqueiro extends Tropa {
     }
 }*/
 
-package com.mycompany.projeto_civ_1;
+/*package com.mycompany.projeto_civ_1;
 
 public class Arqueiro extends Tropa {
     public Arqueiro() {
@@ -42,4 +42,4 @@ public class Arqueiro extends Tropa {
     public int getCustoMovimento() {
         return 3;
     }
-}
+}*/

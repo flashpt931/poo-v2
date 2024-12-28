@@ -1,8 +1,12 @@
 com\mycompany\projeto_civ_1\Terreno.class
 com\mycompany\projeto_civ_1\mapa.class
-com\mycompany\projeto_civ_1\Planice.class
 com\mycompany\projeto_civ_1\Deserto.class
+com\mycompany\projeto_civ_1\Arqueiro.class
+com\mycompany\projeto_civ_1\Planice.class
+com\mycompany\projeto_civ_1\Cavaleiro.class
+com\mycompany\projeto_civ_1\povo.class
 com\mycompany\projeto_civ_1\Mar.class
 com\mycompany\projeto_civ_1\Floresta.class
 com\mycompany\projeto_civ_1\Projeto_civ_1.class
 com\mycompany\projeto_civ_1\Cidades.class
+com\mycompany\projeto_civ_1\Jogo.class

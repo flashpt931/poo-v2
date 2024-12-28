@@ -10,7 +10,7 @@ package com.mycompany.projeto_civ_1;
  */
 public class Floresta extends Terreno {
     public Floresta(){
-        super ("Floreta",'F');
+        super ("Floreta",'F',2,1);
     }
     @Override
     public int getCustoMovimento(){

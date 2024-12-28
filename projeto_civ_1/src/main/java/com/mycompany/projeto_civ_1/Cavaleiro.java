@@ -1,4 +1,4 @@
-package com.mycompany.projeto_civ_1;
+/*package com.mycompany.projeto_civ_1;
 
 public class Cavaleiro extends Tropa {
     public Cavaleiro() {
@@ -11,4 +11,4 @@ public class Cavaleiro extends Tropa {
         outraTropa.setVida(outraTropa.getVida() - danoReduzido);
         System.out.println(getNome() + " atacou com força reduzida. Dano: " + danoReduzido);
     }
-}
+}*/

@@ -10,7 +10,7 @@ package com.mycompany.projeto_civ_1;
  */
 public class colono extends Tropa {
     public colono() {
-        super("colono", 'H', 5, 1, 1, 1);
+        super("colono", 'H', 5, 1, 1, 1,6);
     }
 
     public boolean gerarCidade(int posX, int posY, Terreno[][] mapa) {

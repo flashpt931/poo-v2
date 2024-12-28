@@ -7,15 +7,17 @@ public abstract class Tropa extends Terreno {
     private int dano;
     private int x; // Coordenada X no mapa
     private int y; // Coordenada Y no mapa
+    private int pontosMovimento; // Pontos de movimento da tropa
 
-    public Tropa(String nome, char simbolo, int vida, int dano, int x, int y) {
-        super(nome, simbolo, x, y); // Call the constructor of the superclass Terreno
+    public Tropa(String nome, char simbolo, int vida, int dano, int x, int y, int pontosMovimento) {
+        super(nome, simbolo, 0, 0); // Call the constructor of the superclass Terreno
         this.nome = nome;
         this.simbolo = simbolo;
         this.vida = vida;
         this.dano = dano;
         this.x = x;
         this.y = y;
+        this.pontosMovimento = pontosMovimento;
     }
 
     public int getX() {
@@ -52,6 +54,18 @@ public abstract class Tropa extends Terreno {
 
     public char getSimbolo() {
         return simbolo;
+    }
+
+    public int getPontosMovimento() {
+        return pontosMovimento;
+    }
+
+    public void setPontosMovimento(int pontosMovimento) {
+        this.pontosMovimento = pontosMovimento;
+    }
+
+    public void reduzirPontosMovimento(int custo) {
+        this.pontosMovimento -= custo;
     }
 
     public void atacar(Tropa outraTropa) {

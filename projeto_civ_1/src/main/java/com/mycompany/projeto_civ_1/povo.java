@@ -6,14 +6,8 @@ package com.mycompany.projeto_civ_1;
 
 /**
  *
- * @author franc
+ * @author Flash
  */
-public class Deserto extends Terreno {
-    public Deserto(){
-        super ("Deserto",'D',1,1);
-    }
-    @Override
-    public int getCustoMovimento(){
-        return 5;
-    }
+public class povo {
+    
 }
