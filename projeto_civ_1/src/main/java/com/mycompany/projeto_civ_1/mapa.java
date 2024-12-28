@@ -40,7 +40,7 @@ public class mapa {
 
     public void definirTamanhoAleatorio() {
         Random random = new Random();
-        this.tamanho = random.nextInt(21) + 10;
+        this.tamanho = random.nextInt(11) + 10;
         System.out.println("Tamanho do mapa: " + tamanho + "X" + tamanho);
         mapa = new Terreno[tamanho][tamanho];
     }
@@ -96,5 +96,15 @@ public class mapa {
             return null;
         }
         return tropas.get(indice);
+    }
+
+    public Cidades getCidade(int x, int y) {
+        if (x < 0 || x >= tamanho || y < 0 || y >= tamanho) {
+            return null; // Fora dos limites do mapa
+        }
+        if (mapa[x][y] instanceof Cidades) {
+            return (Cidades) mapa[x][y];
+        }
+        return null; // Não há cidade nesta posição
     }
 }

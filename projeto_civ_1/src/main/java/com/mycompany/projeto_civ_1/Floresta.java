@@ -9,11 +9,22 @@ package com.mycompany.projeto_civ_1;
  * @author franc
  */
 public class Floresta extends Terreno {
-    public Floresta(){
-        super ("Floreta",'F',2,1);
+    public Floresta() {
+        super("Floresta", 'F', 3, 4);
     }
+
     @Override
-    public int getCustoMovimento(){
+    public int getCustoMovimento() {
+        return 2;
+    }
+
+    @Override
+    public int getAlimento() {
         return 3;
+    }
+
+    @Override
+    public int getMaterial() {
+        return 4;
     }
 }

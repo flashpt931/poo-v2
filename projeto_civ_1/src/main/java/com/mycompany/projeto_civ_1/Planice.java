@@ -16,4 +16,14 @@ public class Planice extends Terreno {
     public int getCustoMovimento(){
         return 1;
     }
+
+    @Override
+    public int getAlimento() {
+        return 3;
+    }
+
+    @Override
+    public int getMaterial() {
+        return 1;
+    }
 }

@@ -1,8 +1,8 @@
 package com.mycompany.projeto_civ_1;
 
-public class Arqueiro extends Tropa {
-    public Arqueiro() {
-        super("Arqueiro", 'A', 8, 4, 0, 0, 8);
+public class Infantaria extends Tropa {
+    public Infantaria() {
+        super("Infantaria", 'I', 10, 5, 0, 0, 5);
     }
 
     @Override

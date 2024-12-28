@@ -38,7 +38,7 @@ public class Projeto_civ_1 {
             // Display main menu
             System.out.println("\n=== Civilização - Turno " + turno + " ===");
             System.out.println("1. Lista de unidades");
-            System.out.println("2. Construir ou melhorar um edifício na cidade");
+            System.out.println("2. Gerir Ciddades");
             System.out.println("3. Ver o mapa");
             System.out.println("4. Finalizar turno");
             System.out.println("0. Sair do jogo");
@@ -51,7 +51,7 @@ public class Projeto_civ_1 {
                     listadetropas(scanner);
                     break;
                 case 2:
-                    construirEdificio(scanner);
+                    gerirCidade(scanner);
                     break;
                 case 3:
                     exibirMapa();
@@ -150,7 +150,44 @@ public class Projeto_civ_1 {
 
         System.out.println("Unidade movida para a posição (" + novoX + ", " + novoY + ").");
     }
-
+    private void gerirCidade(Scanner scanner) {
+        System.out.println("Gerindo cidade...");
+        // Assuming you have a method to get the city at the current position of the colono
+        Cidades cidade = mapa.getCidade(colono.getX(), colono.getY());
+        if (cidade != null) {
+            cidade.setX(colono.getX());
+            cidade.setY(colono.getY());
+            boolean voltar = false;
+            while (!voltar) {
+                System.out.println("Nível da cidade: " + cidade.getNivel());
+                System.out.println("recursos:"+ cidade.getComida()+" "+cidade.getProducao());
+                System.out.println("1. Gerir Edifícios");
+                System.out.println("2. Gerir População");
+                System.out.println("3. Gerar Unidade");
+                System.out.println("4. Voltar");
+                System.out.print("Escolha uma opção: ");
+                int opcao = scanner.nextInt();
+                switch (opcao) {
+                    case 1:
+                        gerirEdificios(scanner, cidade);
+                        break;
+                    case 2:
+                        gerirPopulacao(scanner, cidade);
+                        break;
+                    case 3:
+                        gerarUnidade(scanner, cidade);
+                        break;
+                    case 4:
+                        voltar = true;
+                        break;
+                    default:
+                        System.out.println("Opção inválida. Tente novamente.");
+                }
+            }
+        } else {
+            System.out.println("Nenhuma cidade encontrada na posição atual.");
+        }
+    }
     private void criarCidade(Scanner scanner, Tropa tropa) {
         if (tropa instanceof colono) {
             colono colono = (colono) tropa;
@@ -161,30 +198,68 @@ public class Projeto_civ_1 {
         } 
     }
 
-    private void construirEdificio(Scanner scanner) {
-        System.out.println("Construindo edifício...");
-        // Implement logic for building or upgrading a building
+    private void gerirEdificios(Scanner scanner, Cidades cidade) {
+        System.out.println("Gerindo edifícios da cidade...");
+        // Implement logic for managing buildings
     }
     
-    private void exibirMapa() {
-        colono.imprimirMapa(mapa.getMapa());
+    private void gerirPopulacao(Scanner scanner, Cidades cidade) {
+        System.out.println("Gerindo população da cidade...");
+        cidade.alocarCivis(scanner, mapa.getMapa());
     }
+    private void gerarUnidade(Scanner scanner, Cidades cidade) {
+        System.out.println("Gerar Unidade...");
+        System.out.println("1. Colono - 50 comida");
+        System.out.println("2. Infantaria - 10 comida");
+        System.out.println("3. Arqueiro - 20 comida");
+        System.out.println("4. Voltar");
+        System.out.print("Escolha o tipo de tropa: ");
+        int tipoTropa = scanner.nextInt();
 
-    private void finalizarTurno() {
-        turno++;
-        // Verifica e evolui o nível das cidades no final de cada turno
-        for (int i = 0; i < mapa.getTamanho(); i++) {
-            for (int j = 0; j < mapa.getTamanho(); j++) {
-                if (mapa.getMapa()[i][j] instanceof Cidades) {
-                    ((Cidades) mapa.getMapa()[i][j]).evoluirNivel();
+        boolean sucesso = false;
+        switch (tipoTropa) {
+            case 1:
+                sucesso = cidade.gerarTropa("colono", cidade.getX(), cidade.getY(), mapa);
+                break;
+            case 2:
+                sucesso = cidade.gerarTropa("infantaria", cidade.getX(), cidade.getY(), mapa);
+                break;
+            case 3:
+                sucesso = cidade.gerarTropa("arqueiro", cidade.getX(), cidade.getY(), mapa);
+                break;
+            case 4:
+                return; // Voltar
+            default:
+                System.out.println("Opção inválida. Tente novamente.");
+                return;
+        }
+
+        if (!sucesso) {
+            System.out.println("Falha ao gerar a tropa.");
+        }
+    }
+        private void exibirMapa() {
+            colono.imprimirMapa(mapa.getMapa());
+        }
+    
+        private void finalizarTurno() {
+            turno++;
+            // Verifica e evolui o nível das cidades no final de cada turno
+            for (int i = 0; i < mapa.getTamanho(); i++) {
+                for (int j = 0; j < mapa.getTamanho(); j++) {
+                    if (mapa.getMapa()[i][j] instanceof Cidades) {
+                        Cidades cidade = (Cidades) mapa.getMapa()[i][j];
+                        cidade.recolherRecursos(mapa.getMapa());
+                        cidade.evoluirNivel();
+                        System.out.println("Cidade na posição ("+i+","+j+") tem comida: "+cidade.getComida()+" e producao: " + cidade.getProducao());
+                    }
                 }
             }
+            System.out.println("Turno " + turno + " iniciado!");
         }
-        System.out.println("Turno " + turno + " iniciado!");
+    
+        public static void main(String[] args) {
+            Projeto_civ_1 jogo = new Projeto_civ_1();
+            jogo.jogar();
+        }
     }
-
-    public static void main(String[] args) {
-        Projeto_civ_1 jogo = new Projeto_civ_1();
-        jogo.jogar();
-    }
-}
