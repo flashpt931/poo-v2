@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.projeto_civ_1;
 
 import java.util.ArrayList;
@@ -13,21 +9,27 @@ public class Cidades extends Terreno {
     private int nivel;
     private int comida;
     private int producao;
-    private int X;
-    private int Y;
-    private int raioDominacao;
+    private int ouro;
+    private int tesouro;
+    private int x;
+    private int y;
     private List<int[]> posicoesCivis; // Lista para armazenar as posições dos civis
+    private List<Edificio> edificios; // Lista para armazenar os edifícios
 
-    public Cidades() {
+    public Cidades(int x, int y) {
         super("Cidade", 'C', 0, 0);
+        this.x = x;
+        this.y = y;
         this.nivel = 1;
         this.comida = 0;
         this.producao = 0;
-        this.raioDominacao = 3; // Define o raio de dominação da cidade
+        this.ouro = 0;
+        this.tesouro = 0;
         this.posicoesCivis = new ArrayList<>(); // Inicializa a lista de posições dos civis
+        this.edificios = new ArrayList<>(); // Inicializa a lista de edifícios
     }
-   
-    // Getters para comida e produção
+
+    // Getters para comida, produção e ouro
     public int getComida() {
         return comida;
     }
@@ -36,20 +38,28 @@ public class Cidades extends Terreno {
         return producao;
     }
 
+    public int getOuro() {
+        return ouro;
+    }
+
+    public int getTesouro() {
+        return tesouro;
+    }
+
     public int getX() {
-        return X;
+        return x;
     }
 
     public int getY() {
-        return Y;
+        return y;
     }
 
     public void setX(int x) {
-        this.X = x;
+        this.x = x;
     }
 
     public void setY(int y) {
-        this.Y = y;
+        this.y = y;
     }
 
     public void setNivel(int nivel) {
@@ -62,18 +72,22 @@ public class Cidades extends Terreno {
     }
 
     public void evoluirNivel() {
-        if (this.comida >= 100 && this.producao >= 50) {
+        if (this.ouro >= 100) {
             this.nivel++;
-            this.comida -= 100;
-            this.producao -= 50;
+            this.ouro -= 100;
             System.out.println("Cidade evoluiu para o nível " + this.nivel);
         } else {
-            System.out.println("Recursos insuficientes para evoluir a cidade.");
+            System.out.println("Ouro insuficiente para evoluir a cidade.");
         }
     }
 
     public int getNivel() {
         return nivel;
+    }
+
+    public void transformarOuroEmTesouro() {
+        tesouro += ouro;
+        ouro = 0;
     }
 
     public boolean gerarTropa(String tipoTropa, int cidadeX, int cidadeY, mapa mapa) {
@@ -112,7 +126,8 @@ public class Cidades extends Terreno {
             novoX = cidadeX + random.nextInt(5) - 2; // Gera uma posição aleatória no raio de 2
             novoY = cidadeY + random.nextInt(5) - 2;
 
-            if (novoX >= 0 && novoX < mapa.getTamanho() && novoY >= 0 && novoY < mapa.getTamanho() && !(mapa.getMapa()[novoX][novoY] instanceof Tropa)) {
+            if (novoX >= 0 && novoX < mapa.getTamanho() && novoY >= 0 && novoY < mapa.getTamanho() &&
+                !(mapa.getMapa()[novoX][novoY] instanceof Tropa) && !(novoX == cidadeX && novoY == cidadeY)) {
                 posicaoValida = true;
                 break;
             }
@@ -146,7 +161,7 @@ public class Cidades extends Terreno {
             int y = scanner.nextInt();
 
             // Verifica se a posição está dentro dos limites do mapa e dentro do raio de 3
-            int distancia = Math.abs(x - this.X) + Math.abs(y - this.Y);
+            int distancia = Math.abs(x - this.x) + Math.abs(y - this.y);
             if (x >= 0 && x < mapa.length && y >= 0 && y < mapa[x].length && distancia <= 3) {
                 totalAlimento += mapa[x][y].getAlimento();
                 totalMaterial += mapa[x][y].getMaterial();
@@ -181,7 +196,54 @@ public class Cidades extends Terreno {
         this.comida += totalAlimento;
         this.producao += totalMaterial;
 
-        System.out.println("Recursos recolhidos. Comida: " + this.comida + ", Produção: " + this.producao);
+        // Aplica os efeitos dos edifícios
+        for (Edificio edificio : edificios) {
+            if (edificio.getNome().equals("Serralheria") && edificio.isConstruido()) {
+                this.producao += this.producao * 0.2; // Aumenta 20% da produção
+            } else if (edificio.getNome().equals("Talho") && edificio.isConstruido()) {
+                this.comida += this.comida * 0.2; // Aumenta 20% da comida
+            } else if (edificio.getNome().equals("Mina") && edificio.isConstruido()) {
+                this.ouro += 25; // Gera 25 ouro
+            }
+        }
+
+        System.out.println("Recursos recolhidos. Comida: " + this.comida + ", Produção: " + this.producao + ", Ouro: " + this.ouro);
     }
 
+    // Métodos para listar e construir edifícios
+    public void listarEdificios() {
+        if (edificios.isEmpty()) {
+            System.out.println("Nenhum edifício construído.");
+        } else {
+            System.out.println("Edifícios construídos:");
+            for (Edificio edificio : edificios) {
+                System.out.println("- " + edificio.getNome() + (edificio.isConstruido() ? " (Construído)" : " (Em construção, faltam " + edificio.getTurnosRestantes() + " turnos)"));
+            }
+        }
+    }
+
+    public void construirEdificio(String nomeEdificio) {
+        int custoProducao = 10; // Custo de produção para construir um edifício
+
+        if (this.producao < custoProducao) {
+            System.out.println("Produção insuficiente para construir " + nomeEdificio + ".");
+            return;
+        }
+
+        this.producao -= custoProducao;
+        int turnosParaConstruir = nomeEdificio.equals("Mina") ? 5 : 3; // 5 turnos para Mina, 3 turnos para outros
+        Edificio edificio = new Edificio(nomeEdificio, turnosParaConstruir);
+        edificios.add(edificio);
+        System.out.println("Construção do edifício " + nomeEdificio + " iniciada. Faltam " + turnosParaConstruir + " turnos para ser concluída.");
+    }
+
+    public void atualizarEdificios() {
+        for (Edificio edificio : edificios) {
+            boolean wasConstruido = edificio.isConstruido();
+            edificio.reduzirTurno();
+            if (!wasConstruido && edificio.isConstruido()) {
+                System.out.println("Edifício " + edificio.getNome() + " foi concluído.");
+            }
+        }
+    }
 }
